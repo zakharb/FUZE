@@ -1,0 +1,62 @@
+.chart {
+  width: 100%;
+  min-height: 350px;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);
+  padding-top: 30px;
+}
+
+select {
+  position: absolute;
+  top: 1px;
+  right: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+}
+
+option {
+  color: #555;
+  background-color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+option:hover {
+  background-color: #ddd;
+}
+
+
+.chart-title {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 18px;
+  font-family: Inter;
+  line-height: 1.4;
+  z-index: 1;
+  color: rgba(128, 128, 128, 1);
+  font-weight: 500;
+}
+
+.chart-time {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  font-family: Inter;
+  line-height: 1.4;
+  z-index: 1;
+  color: rgba(128, 128, 128, 1);
+  font-weight: 500;
+  padding-top:10px;
+}
+

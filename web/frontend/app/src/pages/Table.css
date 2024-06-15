@@ -1,0 +1,50 @@
+.table table {
+  width: 100%;
+  text-align: left;
+  border-collapse:separate;
+  border-spacing:0 15px;
+  line-height: 1.4;
+  letter-spacing: -0.3px;
+  transition: none;
+}
+
+.table thead tr th{
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.table thead tr th:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.table thead tr th:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.table tbody {
+  font-size: 14px;
+}
+
+.table td {
+  padding: 15px;
+}
+
+.table tbody tr {
+  box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.1);
+  margin-bottom: 20px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.actionButtons {
+  visibility: hidden;
+}
+
+tr:hover .actionButtons {
+  visibility: visible;
+}
+
