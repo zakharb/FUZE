@@ -1,21 +1,13 @@
 {
     "collector": {
         "tap1": {
-            "192.168.200.2": {
-                "name": "SCADA",
-                "type": "oil"
-            },
-            "192.168.200.3": {
-                "name": "PLC1",
-                "type": "oil"
-            },
-            "192.168.200.4": {
-                "name": "PLC2",
-                "type": "oil"
+            "172.100.0.1": {
+                "name": "Host",
+                "type": "test"
             }
         }
     },
-    "fuzer": [
+    "fusion": [
         {
             "_id": "6512ab91f7da2d7d1a2a95d8",
             "description": "New HTTP request found",
@@ -177,7 +169,7 @@
             "timer": "300"
         }
     ],
-    "normalizer": [
+    "sensor": [
         {
             "_id": "6512ab8cf7da2d7d1a2a95d5",
             "description": "Normalization of data coming from Network traffic IDS",

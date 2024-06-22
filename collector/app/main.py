@@ -22,8 +22,8 @@
 
 import logging
 import asyncio
-from config import Config
 from logger import Logger
+from config import Config
 from modules.core import Core
 
 if __name__ == "__main__":
@@ -41,7 +41,14 @@ if __name__ == "__main__":
     \n""")
     logging.info("[*] Welcome to FUZE Collector")
     logging.info(f'[+] Logging level: {logger.level}')
+    logging.info('[*] Reading configuration')
+    config = Config()
+    config.read()
+    logging.info('[+] Loaded configuration:')
+    logging.info(f'[+] Transmitter: {config.transmitter}')
+    logging.info(f'[+] Modules: {len(config.collector)}')
     logging.info('[*] Starting all modules for FUZE Collector')
-    core = Core()
+    core = Core(collector=config.collector, 
+                transmitter=config.transmitter)
     asyncio.run(core.start())
 

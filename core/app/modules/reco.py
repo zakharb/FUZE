@@ -50,7 +50,7 @@ class Recorder:
                 await asyncio.sleep(60)
                 await self.check_loop()
         except Exception as e:
-            logging.error(f'Repo: {e}')
+            logging.error(f'Repo: {repr(e)}')
 
     def create_tasks(self):
         self.tasks = {}
@@ -77,7 +77,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'[-] REPO: Write messages: {e}')
+                logging.error(f'[-] REPO: Write messages: {repr(e)}')
 
     async def write_events(self):
         repo = AlertRepo()
@@ -90,7 +90,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {e}')
+                logging.error(f'Repo: {repr(e)}')
 
     async def write_alerts(self):
         repo = MetaeventRepo()
@@ -103,7 +103,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {e}')
+                logging.error(f'Repo: {repr(e)}')
 
     async def write_incidents(self):
         repo = IncidentRepo()
@@ -116,4 +116,4 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {e}')
+                logging.error(f'Repo: {repr(e)}')

@@ -39,7 +39,7 @@ import logging
 from re import search, sub
 from datetime import datetime
 
-import spacy
+# import spacy
 
 
 class Normalizer:
@@ -70,7 +70,6 @@ class Normalizer:
                 message = await self.queue_messages.get()
                 if message['sensor'] in self.sensor_types:
                     sensor = self.sensor_types[message['sensor']]
-                    #['sensor_type']
                     #self.alerts = self.config[sensor]['alerts']
                     alert = sensor(message)
                     if alert:

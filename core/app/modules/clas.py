@@ -24,13 +24,13 @@
         ----------          ----------           -----------
            Event    ->           AI        ->      Incident
 """
-
+import json
 import asyncio
 import logging
 import datetime
 import logging
 
-from .repo import AIRepo
+# from .repo import AIRepo
 
 
 class Classifier:
@@ -51,7 +51,7 @@ class Classifier:
         Classificate them through AI and remove False Positives
         """
         try:
-            repo = AIRepo()
+            #repo = AIRepo()
             # incidents = await repo.read('incidents')
             data = {}
             rules = self.parse_config(self.config)
@@ -85,7 +85,8 @@ class Classifier:
                     if time > time_delta:
                         incidents_uniq[uniq] = time
                 incidents = incidents_uniq
-                await repo.update('incidents', incidents)
+                logging.debug(json.dumps(incidents, indent=4, defaut=str))
+                # await repo.update('incidents', incidents)
         except Exception as e:
             logging.error(f'[-] CLAS: {repr(e)}')
 

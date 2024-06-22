@@ -34,8 +34,10 @@ class Core():
     Create coroutines and start them
     """
 
-    def __init__(self):
+    def __init__(self, collector=None, transmitter=None):
         self.tasks = {}
+        self.collector = collector
+        self.transmitter = transmitter
 
     async def start(self):
         """
@@ -58,9 +60,8 @@ class Core():
         """
         messages = asyncio.Queue()
         messages_out = asyncio.Queue()
-        collector = Collector(messages=messages)
-        transmitter = Transmitter(messages=messages, 
-                                  messages_out=messages_out)
+        collector = Collector(config=self.collector, messages=messages)
+        transmitter = Transmitter(config=self.transmitter, messages=messages)
         self.coroutines = {
             'Collector': collector.start(),
             'Transmitter': transmitter.start(),

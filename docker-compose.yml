@@ -17,8 +17,13 @@ services:
     build: ./collector
     volumes:
       - ./collector/app/:/app/
+      - ./collector/config/conig.json:/app/config/
     environment:
       - DEBUG=true
+      - TRANSMITTER_HOST=core
+      - TRANSMITTER_PORT=514
+      - SYSLOG=true
+      - SYSLOG_PORT=514
     ports:
       - "514:514"       
 

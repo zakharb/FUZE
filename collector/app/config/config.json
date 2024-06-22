@@ -1,0 +1,14 @@
+{
+	"transmitter": {
+		"host": "localhost",
+		"port": "55514"
+	},
+	"collector": [
+		{
+			"name": "syslog",
+			"config": {
+				"port": "514"
+			}
+		}
+	]
+}

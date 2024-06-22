@@ -26,47 +26,44 @@ import json
 import asyncio
 import logging
 from datetime import datetime
+from .collector.syslog import SyslogServer
+from .tran import Transmitter
 
 class Collector:
     """
     Module takes Data from Collectors and create Messages.
     """
-    def __init__(self, config, messages, messages_out, events):
+    def __init__(self, config, messages):
         self.config = config
         self.queue_messages = messages
-        self.queue_messages_out = messages_out
-        self.queue_events = events
-        self.IP = "0.0.0.0"
-        self.PORT = 514
+        self.coroutines = {}
 
     async def start(self):
         """
         Start Server to receive Messages from Collectors
         """
         try:
-            # self.create_coroutines()
-            # self.start_tasks()
-            loop = asyncio.get_running_loop()
-            transport, protocol = await loop.create_datagram_endpoint(
-                lambda: EchoServerProtocol(self.config, self.queue_messages),
-                local_addr=(self.IP, self.PORT))
+            await self.create_coroutines()
+            await self.start_tasks()
             while True:
                 await asyncio.sleep(3)
-                print('col 3 sec')
-                # await self.restart_tasks()
+                await self.restart_tasks()
         except Exception as e:
-            logging.error(f'[-] COLL: {e}')
+            logging.error(f'[-] COLL: {repr(e)}')
 
-    def create_coroutines(self):
+    async def create_coroutines(self):
         """
         Create coroutines with queues
         """
-        server = SyslogServer(self.config, self.queue_messages)
-        self.coroutines = {
-            'server': server.start()
-        }
+        print(self.config)
+        for module in self.config:
+            module_name = module['name']
+            module_config = module['config']
+            if module_name == 'syslog':
+                syslog = SyslogServer(module_config, self.queue_messages)
+                self.coroutines['syslog'] = syslog.start()
 
-    def start_tasks(self):
+    async def start_tasks(self):
         """
         Create the Tasks
         """
@@ -84,34 +81,3 @@ class Collector:
                 logging.error(f'[-] COL: Restart module: {k}')
                 cor = self.coroutines[k]
                 self.tasks[k] = self.loop.create_task(cor, name=k)
-
-class EchoServerProtocol:
-    def __init__(self, config, queue_messages):
-        self.config = config
-        self.queue_messages = queue_messages
-        self.con_lost = False
-
-    def connection_made(self, transport):
-        self.transport = transport
-
-    def datagram_received(self, data, addr):
-        try:
-            data = data[:1024].decode('utf-8')
-            ip = addr[0]
-            if ip in '127.0.0.1':
-                node = 'localhost'
-                message = {
-                    'time': datetime.now()
-                    'sensor':'syslog',
-                    'collector': 'collector1', 
-                    'node': 'node1',
-                    'src_ip': '127.0.0.1',
-                    'data': data,
-                }
-            logging.debug(message)
-            self.queue_messages.put_nowait(message)
-        except Exception as e:
-            logging.error(f'[-] LOG: {e}')
-
-    def connection_lost(self, b):
-        self.con_lost = True

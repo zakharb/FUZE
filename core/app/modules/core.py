@@ -28,7 +28,7 @@ from .coll import Collector
 from .norm import Normalizer
 from .fuze import Fuzer
 from .clas import Classifier
-from .reco import Recorder
+# from .reco import Recorder
 
 
 class Core():
@@ -56,7 +56,7 @@ class Core():
                 await self.check_tasks()
         except Exception as e:
             logging.debug(traceback.format_exc())
-            logging.error(f'[-] CORE: {e}')
+            logging.error(f'[-] CORE: {repr(e)}')
 
     async def create_coroutines(self):
         """
