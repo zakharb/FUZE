@@ -24,6 +24,7 @@ import json
 import asyncio
 import logging
 import socket
+import zlib
 
 class Transmitter:
     """
@@ -70,5 +71,6 @@ class Transmitter:
             'collector': 'collector1',
             'messages': messages
         }
-        data = json.dumps(data, default=str)
-        self.sock.sendto(data.encode('utf-8'), (self.server_host, self.server_port))
+        data = json.dumps(data, default=str).encode('utf-8')
+        compressed_data = zlib.compress(data)
+        self.sock.sendto(compressed_data, (self.server_host, self.server_port))

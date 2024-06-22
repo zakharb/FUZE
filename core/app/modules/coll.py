@@ -26,6 +26,7 @@ import json
 import asyncio
 import logging
 from datetime import datetime
+import zlib
 
 class Collector:
     """
@@ -66,8 +67,9 @@ class EchoServerProtocol:
 
     def datagram_received(self, data, addr):
         try:
-            data = data.decode('utf-8')
-            data = json.loads(data)
+            decompressed_data = zlib.decompress(data)  # Decompress the data
+            decompressed_data = decompressed_data.decode('utf-8')
+            data = json.loads(decompressed_data)
             if ('collector' not in data or
                 'messages' not in data):
                 return
