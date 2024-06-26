@@ -55,7 +55,6 @@ class Collector:
         """
         Create coroutines with queues
         """
-        print(self.config)
         for module in self.config:
             module_name = module['name']
             module_config = module['config']

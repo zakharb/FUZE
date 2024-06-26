@@ -1,5 +1,6 @@
 {
 	"transmitter": {
+		"collector_name": "Collector1",
 		"host": "localhost",
 		"port": "55514"
 	},
@@ -7,6 +8,7 @@
 		{
 			"name": "syslog",
 			"config": {
+				"ip": "0.0.0.0",
 				"port": "514"
 			}
 		}

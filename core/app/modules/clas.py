@@ -44,6 +44,12 @@ class Classifier:
         self.queue_incidents = incidents
         self.queue_incidents_out = incidents_out
 
+    def parse_config(self, config):
+        """
+        Parse config
+        """
+        pass
+
     async def start(self):
         """
         Start a main Task
@@ -51,6 +57,7 @@ class Classifier:
         Classificate them through AI and remove False Positives
         """
         try:
+            self.parse_config(self.config)
             #repo = AIRepo()
             # incidents = await repo.read('incidents')
             data = {}

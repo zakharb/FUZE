@@ -34,12 +34,23 @@ class Transmitter:
         self.config = config
         self.queue_messages = messages
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.server_host = '127.0.0.1'
-        self.server_port = 55514
 
+    def parse_config(self, config):
+        """
+        Parse config
+        """
+        rules = []
+        if ('host' not in config or
+            'port' not in config or
+            'collector_name' not in config):
+            raise Exception('[-] TRAN: Bad configuration file, exiting')
+        self.server_host = config['host']
+        self.server_port = int(config['port'])
+        self.collector_name = config['collector_name']
 
     async def start(self):
         try:
+            self.parse_config(self.config)
             while True:
                 await asyncio.sleep(5)
                 raw_messages = []
@@ -68,7 +79,7 @@ class Transmitter:
         logging.debug(f'[+] TRAN: sending {len(messages)}')
         logging.debug(json.dumps(messages, indent=4, default=str))
         data = {
-            'collector': 'collector1',
+            'collector': self.collector_name,
             'messages': messages
         }
         data = json.dumps(data, default=str).encode('utf-8')

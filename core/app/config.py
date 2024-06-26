@@ -39,7 +39,7 @@ class Config:
             if type(config['core']) == dict:
                 self.core = config['core']
         if 'collector' in config:
-            if type(config['collector']) == dict:
+            if type(config['collector']) == list:
                 self.collector = config['collector']
         if 'normalizer' in config:
             if type(config['normalizer']) == list:

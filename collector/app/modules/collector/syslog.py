@@ -34,18 +34,28 @@ class SyslogServer:
     def __init__(self, config, messages):
         self.config = config
         self.queue_messages = messages
-        self.IP = "0.0.0.0"
-        self.PORT = 514
+
+    def parse_config(self, config):
+        """
+        Parse config
+        """
+        rules = []
+        if ('ip' not in config or
+            'port' not in config):
+            raise Exception('[-] COLL: Bad configuration file for Syslog module')
+        self.ip = config['ip']
+        self.port = int(config['port'])
 
     async def start(self):
         """
         Start Server to receive Messages from Sources
         """
         try:
+            self.parse_config(self.config)
             loop = asyncio.get_running_loop()
             transport, protocol = await loop.create_datagram_endpoint(
                 lambda: EchoServerProtocol(self.config, self.queue_messages),
-                local_addr=(self.IP, self.PORT))
+                local_addr=(self.ip, self.port))
             while True:
                 await asyncio.sleep(3600)
                 # TODO check syslog is alive
@@ -66,16 +76,14 @@ class EchoServerProtocol:
         try:
             data = data[:1024].decode('utf-8')
             ip = addr[0]
-            if ip in '127.0.0.1':
-                node = 'localhost'
-                message = {
-                    'time': datetime.now(),
-                    'sensor':'syslog',
-                    'node': 'node1',
-                    'src_ip': '127.0.0.1',
-                    'data': data,
-                }
-            logging.debug(message)
+            message = {
+                'time': datetime.now(),
+                'sensor':'syslog',
+                'node': 'node1',
+                'src_ip': ip,
+                'data': data,
+            }
+            logging.debug(f'[+] COLL: get message from {ip}')
             self.queue_messages.put_nowait(message)
         except Exception as e:
             logging.error(f'[-] LOG: {e}')

@@ -40,14 +40,41 @@ class Collector:
         self.IP = "0.0.0.0"
         self.PORT = 55514
 
+    def parse_config(self):
+        """
+        Parse config
+        """
+        collectors_map = {}
+        for collector in self.config:
+            if ('collector_name' not in collector or
+                'nodes' not in collector):
+                continue
+            collector_name = collector['collector_name']
+            nodes_map = {}
+            nodes = collector['nodes']
+            for node in nodes:
+                if ('name' not in node or 
+                    'sensor' not in node or
+                    'ip' not in node):
+                    logging.debug(f'[-] LOG: not full config, skip node: {node}')
+                    continue
+                ip = node['ip']
+                nodes_map[ip] = {
+                    'name': node['name'],
+                    'sensor': node['sensor']
+                }
+            collectors_map[collector_name] = nodes_map
+        return collectors_map
+
     async def start(self):
         """
         Start Server to receive Messages from Collectors
         """
         try:
+            collectors = self.parse_config()
             loop = asyncio.get_running_loop()
             transport, protocol = await loop.create_datagram_endpoint(
-                lambda: EchoServerProtocol(self.config, self.queue_messages),
+                lambda: EchoServerProtocol(collectors, self.queue_messages),
                 local_addr=(self.IP, self.PORT))
             while True:
                 await asyncio.sleep(3)
@@ -57,8 +84,8 @@ class Collector:
 
 
 class EchoServerProtocol:
-    def __init__(self, config, queue_messages):
-        self.config = config
+    def __init__(self, collectors, queue_messages):
+        self.collectors = collectors
         self.queue_messages = queue_messages
         self.con_lost = False
 
@@ -67,7 +94,7 @@ class EchoServerProtocol:
 
     def datagram_received(self, data, addr):
         try:
-            decompressed_data = zlib.decompress(data)  # Decompress the data
+            decompressed_data = zlib.decompress(data)
             decompressed_data = decompressed_data.decode('utf-8')
             data = json.loads(decompressed_data)
             if ('collector' not in data or
@@ -76,8 +103,18 @@ class EchoServerProtocol:
             ip = addr[0]
             collector = data['collector']
             raw_messages = data['messages']
+            if collector not in self.collectors:
+                logging.debug(f'[-] LOG: Unknown collector: {collector}')
+                return
             logging.debug(f'[+] LOG: Get data from collector: {collector}')
             for raw_message in raw_messages:
+                ip = raw_message['src_ip']
+                ips = self.collectors[collector]
+                if ip not in ips:
+                    logging.debug(f'[-] LOG: Unknown ip: {ip}')
+                    return
+                node = ips[ip]['name']
+                sensor = ips[ip]['sensor']
                 message = {
                     'time': raw_message['time'],
                     'sensor': raw_message['sensor'],

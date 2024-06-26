@@ -68,7 +68,9 @@ class Normalizer:
             # self.read_config()
             while True:
                 message = await self.queue_messages.get()
-                if message['sensor'] in self.sensor_types:
+                sensor = message['sensor']
+                logging.debug(f'[+] NOR: get message for sensor: {sensor}')
+                if sensor in self.sensor_types:
                     sensor = self.sensor_types[message['sensor']]
                     #self.alerts = self.config[sensor]['alerts']
                     alert = sensor(message)
