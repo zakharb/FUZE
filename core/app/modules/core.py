@@ -17,7 +17,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     Description:
-        The Core module to start all tasks
+        The Core module for FUZE Core.
+        Start all the tasks.
 """
 
 import asyncio
@@ -51,6 +52,7 @@ class Core():
             logging.info(f'[*] CORE: Starting modules')
             await self.create_coroutines()
             await self.start_tasks()
+            logging.info(f'[+] CORE: All modules are started. Enjoy!')
             while True:
                 await asyncio.sleep(300)
                 await self.check_tasks()

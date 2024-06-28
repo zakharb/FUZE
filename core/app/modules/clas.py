@@ -18,7 +18,7 @@
 
     Description:
         Classification module for FUZE Core.
-        Module takes meta alerts from Fusion and create Incidents.
+        Module takes meta alerts from Fusion and create Incidents using AI.
 
         Correlator          Classification         Recorder
         ----------          ----------           -----------

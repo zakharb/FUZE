@@ -17,7 +17,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     Description:
-        Repository module to work with DB.
+        Repository module for FUZE Core.
+        Work with Mongo DB.
 """
 
 

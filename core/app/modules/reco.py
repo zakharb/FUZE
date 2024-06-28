@@ -17,6 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     Description:
+        Recorder module for FUZE Core.
         Save Messages, Events, Alerts, Incidents from Modules to DB
 """
 
@@ -50,7 +51,7 @@ class Recorder:
                 await asyncio.sleep(60)
                 await self.check_loop()
         except Exception as e:
-            logging.error(f'Repo: {repr(e)}')
+            logging.error(f'RECO: {repr(e)}')
 
     def create_tasks(self):
         self.tasks = {}
@@ -64,7 +65,7 @@ class Recorder:
                 coro = self.coros[name]
                 self.tasks[name] = self.loop.create_task(
                     coro['function'](*coro['args']), name=name)
-                logging.error('[-] REPO: Restart task: ' + name)
+                logging.error('[-] RECO: Restart task: ' + name)
 
     async def write_messages(self):
         repo = MessageRepo()
@@ -77,7 +78,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'[-] REPO: Write messages: {repr(e)}')
+                logging.error(f'[-] RECO: Error write messages: {repr(e)}')
 
     async def write_events(self):
         repo = AlertRepo()
@@ -90,7 +91,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {repr(e)}')
+                logging.error(f'[-] RECO: Error write events: {repr(e)}')
 
     async def write_alerts(self):
         repo = MetaeventRepo()
@@ -103,7 +104,7 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {repr(e)}')
+                logging.error(f'[-] RECO: Error write alerts: {repr(e)}')
 
     async def write_incidents(self):
         repo = IncidentRepo()
@@ -116,4 +117,4 @@ class Recorder:
                 if data:
                     await repo.write(data)
             except Exception as e:
-                logging.error(f'Repo: {repr(e)}')
+                logging.error(f'[-] RECO: Error write incidents: {repr(e)}')

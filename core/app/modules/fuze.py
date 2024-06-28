@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     Description:
-        Fuzer module for FUZE.
+        Fuzer module for FUZE Core.
         Module takes Events from Normalization and groups them into Alerts.
 
         Normalization         Fuzer            Classificator
