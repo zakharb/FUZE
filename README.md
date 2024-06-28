@@ -20,11 +20,13 @@
 </p>
 
 
-## :white_square: Getting Started
+## :white_medium_square: Getting Started
 
-[FUZE](https://github.com/zakharb/fuze) is an autonomous [SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management) system tailored for OT/ICS environments, leveraging AI to automatically collect, normalize, and detect incidents without the need for manual rule-writing.
+[FUZE](https://github.com/zakharb/fuze) is an autonomous [SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management) tailored for OT/ICS environments.
 
-Designed to enhance security and efficiency, FUZE offers advanced threat detection capabilities through its AI-driven approach, ensuring proactive defense in critical industrial systems.
+Leveraging AI to automatically collect Messages, normalize Events, and detect Incidents without the need for manual rule-writing.
+
+Designed to enhance security and efficiency, FUZE offers advanced threat detection capabilities through its AI-driven approach, ensuring proactive defense in critical Industrial systems.
 
 
 ### Requirements
@@ -53,27 +55,27 @@ docker-compose up --build --force --remove-orphans
   <img src="img/install.gif" alt="animated" />
 </p>
 
-## :white_square: Usage  
+## :white_medium_square: Usage  
 
 
-## :white_square: Configuration  
+## :white_medium_square: Configuration  
 Main configuration is `docker-compose.yml`  
 
 
-## :white_square: Deployment
+## :white_medium_square: Deployment
 
 Edit `Dockerfile` for each `Service` and deploy containers
 
-## :white_square: Versioning
+## :white_medium_square: Versioning
 
 Using [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/zakharb/fuze/tags). 
 
-## :white_square: Authors
+## :white_medium_square: Authors
 
 * **Zakhar Bengart** - *Initial work* - [Ze](https://github.com/zakharb)
 
 See also the list of [contributors](https://github.com/zakharb/fuze/contributors) who participated in this project.
 
-## :white_square: License
+## :white_medium_square: License
 
 This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation - see the [LICENSE](LICENSE) file for details
