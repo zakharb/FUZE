@@ -52,7 +52,7 @@ class Fuzer:
             rules = self.parse_config(self.config)
             while True:
                 event = await self.queue_events.get()
-                logging.info('[*] FUZE: got event', event)
+                logging.debug('[*] FUZE: got event', event)
                 if event['tax'] in rules:
                     for rule in rules[event['tax']]:
                         alert = rule(event)
@@ -130,7 +130,7 @@ class Rule:
         #     alert_id += event['fields'].get('src_addr') + \
         #         event['fields'].get('tgt_addr')
         if alert_id not in self.alerts:
-            logging.debug('[*] Create new event in alerts')
+            logging.debug('[*] FUZE: Create new event in alerts')
             count = {event['tax']: 1}
             self.alerts[alert_id] = {
                 'init_time': event['time'],
@@ -141,18 +141,20 @@ class Rule:
                 }
             }
         else:
-            logging.debug('[*] Event in alerts')
+            logging.debug('[*] FUZE: Event in alerts')
             alert = self.alerts[alert_id]
             if event['time'] <= alert['end_time'] + self.time_delta:
-                logging.debug('[*] Time is less')
+                logging.debug('[*] FUZE: Time is less')
                 alert['end_time'] = event['time']
-                if event['tax'] in alert['taxanomy_set']:
-                    alert['taxanomy_set'][event['tax']] += 1
+                taxanomy_set = alert['taxanomy_set']
+                tax = event['tax']
+                if tax in taxanomy_set:
+                    taxanomy_set[tax] += 1
                 else:
-                    alert['taxanomy_set'][event['tax']] = 1
-                    alert['events'][event['tax']] = event
+                    taxanomy_set[tax] = 1
+                    alert['events'][tax] = event
                 logging.debug(
-                    f"[*] Adding count to alert: {alert['taxanomy_set'][event['tax']]}")
+                    f"[*] FUZE: Adding count to alert: {taxanomy_set[tax]}")
             else:
                 # init alert
                 logging.debug('[*] Time is more')

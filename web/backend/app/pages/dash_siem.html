@@ -1,0 +1,51 @@
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-9">
+      <div class="row py-2">
+        <div class="col-sm">
+          <v-total-card data_url="/api/siem/total_incidents" data_title="Incidents" data_color="primary" />
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <v-total-card data_url="/api/siem/total_events" data_title="Events" data_color="primary2" />
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <v-total-card data_url="/api/siem/total_messages" data_title="Messages" data_color="secondary" />
+          </div>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-12">
+          <v-timechart data_title="Timeline" data_url="/api/siem/timeline" />
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-4">
+          <v-top-categories data_title="Mitre Att&ck" data_url="/api/siem/top_categories" data_color="rgb(10, 132, 255)"/>
+        </div>
+        <div class="col-8">
+          <v-bubblechart data_title="Sources" data_url="/api/siem/bubble"/>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="row py-2">
+        <div class="col">
+          <v-severitychart data_title="Severity" data_url="/api/siem/severity" />
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col">
+          <v-summarychart data_title="Incidents last day" data_url="/api/siem/sum_chart" />
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col">
+          <v-radarchart data_title="AI Classification" data_url="/api/siem/radar" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

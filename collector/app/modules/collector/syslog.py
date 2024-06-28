@@ -86,7 +86,7 @@ class EchoServerProtocol:
             logging.debug(f'[+] COLL: get message from {ip}')
             self.queue_messages.put_nowait(message)
         except Exception as e:
-            logging.error(f'[-] LOG: {e}')
+            logging.error(f'[-] LOG: {repr(e)}')
 
     def connection_lost(self, b):
         self.con_lost = True

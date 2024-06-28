@@ -17,7 +17,7 @@ services:
     build: ./collector
     volumes:
       - ./collector/app/:/app/
-      - ./collector/config/conig.json:/app/config/
+      # - ./collector/config/conig.json:/app/config/
     environment:
       - DEBUG=true
       - TRANSMITTER_HOST=core
@@ -50,19 +50,6 @@ services:
     depends_on:
        - mongo
 
-  frontend:
-    build: ./web/frontend
-    volumes:
-      #- ./web/frontend/dist:/app/dist
-      - ./web/frontend/app:/app
-      #- ./core/config/:/app/config
-    environment:
-      CHOKIDAR_USEPOLLING: 1    
-      WDS_SOCKET_PORT: 443
-      REACT_APP_URL: localhost
-    depends_on:
-       - mongo
-
   nginx:
     image: nginx:latest
     ports:
@@ -73,7 +60,6 @@ services:
       - ./ssl/server.crt:/etc/ssl/certs/server.crt
       - ./ssl/server.key:/etc/ssl/private/server.key
     depends_on:
-      - frontend
       - backend
     logging:
         driver: none

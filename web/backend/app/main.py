@@ -1,70 +1,47 @@
 from fastapi import FastAPI
-from motor.motor_asyncio import AsyncIOMotorClient
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
-from app.api.collectors_router import router as collectors_router
-from app.api.sources_router import router as sources_router
-from app.api.normalization_router import router as normalization_router
-from app.api.correlation_router import router as correlation_router
-from app.api.taxanomy_router import router as taxanomy_router
-from app.api.dahboard_router import router as siem_router
-from app.api.netmap_router import router as netmap_router
-from app.api.settings_router import router as settings_router
-from app.api.ai_router import router as ai_router
-
-from starlette.middleware.cors import CORSMiddleware
-from app.config import DATABASE_URI
-from fastapi import Request, HTTPException
+from app.api import conf_coll
+from app.api import conf_norm
+from app.api import conf_corr
+from app.api import dash_siem
+from app.api import dash_ids
+from app.api import mon_net
+from app.api import mon_risk
+from app.api import mon_unk
+from app.api import data
+from app.api import opt_set
+from app import page_routes
 
 app = FastAPI(openapi_url="/api/v1/openapi.json", 
               docs_url="/api/v1/docs")
 
-# startup
-@app.on_event("startup")
-async def startup_db_client():
-    app.mongodb_client = AsyncIOMotorClient(DATABASE_URI)
-    app.mongodb = app.mongodb_client['db']
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+app.mount("/js", StaticFiles(directory="app/js"), name="js")
+app.mount("/styles", StaticFiles(directory="app/styles"), name="styles")
+app.mount("/components", StaticFiles(directory="app/components"), name="components")
 
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    app.mongodb_client.close()
-
-# routes
-app.include_router(collectors_router, tags=["collectors"], prefix="/api/v1/collectors")
-app.include_router(sources_router, tags=["sources"], prefix="/api/v1/sources")
-app.include_router(normalization_router, tags=["normalization"], prefix="/api/v1/normalization")
-app.include_router(correlation_router, tags=["correlation"], prefix="/api/v1/correlation")
-app.include_router(taxanomy_router, tags=["taxanomy"], prefix="/api/v1/taxanomy")
-app.include_router(siem_router, tags=["dashboard"], prefix="/api/v1/siem")
-app.include_router(netmap_router, tags=["netmap"], prefix="/api/v1/netmap")
-app.include_router(settings_router, tags=["settings"], prefix="/api/v1/settings")
-app.include_router(ai_router, tags=["ai"], prefix="/api/v1/ai")
-
-# set middleare to check token
-async def verify_token(request: Request, call_next):
-    token = request.headers.get("token")
-    if token:
-        alg = jwt.get_unverified_header(token)['alg']
-        decoded_token = jwt.decode(token, algorithms=alg, options={"verify_signature": False})
-        if "exp" in decoded_token and decoded_token["exp"] < int(time.time()):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Expired authentication token",
-            )
-    response = await call_next(request)        
-    return response
-
-app.middleware("http")(verify_token)
-
-# CORS middleware
-origins = [
-    'http://localhost:3000',
-    'http://localhost:8000'
-]
-
+origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=['GET'],
-    allow_headers=['Content-Type', 'application/xml'],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
+
+# page routes
+app.include_router(page_routes.router)
+
+# api routes
+app.include_router(conf_coll.router, tags=["conf_collection"], prefix="/api/collection")
+app.include_router(conf_norm.router, tags=["conf_normalization"], prefix="/api/normalization")
+app.include_router(conf_corr.router, tags=["conf_correlation"], prefix="/api/correlation")
+app.include_router(data.router, tags=["data"], prefix="/api/data")
+app.include_router(dash_siem.router, tags=["dashboard_siem"], prefix="/api/siem")
+app.include_router(dash_ids.router, tags=["dashboard_ids"], prefix="/api/ids")
+app.include_router(mon_net.router, tags=["monitor_netmap"], prefix="/api/netmap")
+app.include_router(mon_risk.router, tags=["monitor_risk_assesment"], prefix="/api/risk")
+app.include_router(mon_unk.router, tags=["monitor_unknown_sources"], prefix="/api/unk")
+app.include_router(opt_set.router, tags=["settings"], prefix="/api/settings")

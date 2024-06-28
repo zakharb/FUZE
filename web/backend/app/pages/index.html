@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link href="{{ url_for('styles', path='/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('styles', path='/styles.css') }}" rel="stylesheet">
+	<script type="text/javascript" src="{{url_for('js', path='/bootstrap.min.js')}}"></script>
+	<script type="text/javascript" src="https://d3js.org/d3.v7.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script type="module" src="{{ url_for('components', path='/table_base.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/table_filter.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/table_panel.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/table_modal.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_time.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_radar.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_bubble.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_summary.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_topcat.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/chart_severity.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/card_total.js') }}"></script>
+	<script type="module" src="{{ url_for('components', path='/netmap.js') }}"></script>
+	<script type="text/javascript" src="{{url_for('js', path='/app.js')}}"></script>
+	<script type="text/javascript" src="{{url_for('js', path='/table.js')}}"></script>
+
+	<!-- <link href="{{ url_for('styles', path='/icons/css/all.min.css') }}" rel="stylesheet"> -->
+	<title>FUZE</title>
+	<link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/icon.png') }}">
+	{% block head %}{% endblock %}
+
+</head>
+
+<body data-bs-theme="dark">
+	<div class="navbar">
+		<div class="top-nav">
+			<img 
+				class="logo" 
+				src="{{ url_for('static', path='/logo.png') }}">
+			<a onmouseenter="showSubmenus('Dashboard')">Dashboard</a>
+			<a onmouseenter="showSubmenus('Monitoring')">Monitoring</a>
+			<a onmouseenter="showSubmenus('Data')">Data</a>
+			<a onmouseenter="showSubmenus('Configuration')">Configuration</a>
+			<a onmouseenter="showSubmenus('Settings')">Settings</a>
+		</div>
+		<div class="submenus-bg">
+			<div class="submenus" onmouseleave="hideSubmenus()" onclick="hideSubmenus()">
+		</div>
+		</div>
+	</div>
+	<div class="position-fixed top-2 end-0 p-2" style="z-index: 11">
+		<div class="toast" id="toast">
+			<div class="toast-header">
+				<strong class="me-auto text-warning header">Info</strong>
+			</div>
+			<div class="toast-body">
+			</div>
+		</div>
+	</div>
+	<div id="page_data" class="col">
+	</div>
+</body>
+
+{% block javascript %}
+
+<script type="text/javascript">
+	function switchPage(e) {
+		let content = document.querySelector('#page_data')
+		let navlinks = document.querySelectorAll('.nav-link')
+		Array.from(navlinks).forEach((navlink) => {
+			navlink.classList.remove('active')
+		})
+		e.classList.add('active')
+		fetch(e.dataset.url)
+			.then((response) => response.text())
+			.then((data) => content.innerHTML = data)
+		const submenus = document.querySelector('.submenus');
+		submenus.style.display = 'none';
+	};
+
+	let activeMenu = null;
+
+	function showSubmenus(menu) {
+		const body = document.body;
+		body.classList.toggle("blur");
+		const submenusBg = document.querySelector('.submenus-bg');
+		submenusBg.style.display = 'block';
+		activeMenu = menu;
+		const submenus = document.querySelector('.submenus');
+		submenus.innerHTML = '';
+		if (menu === 'Dashboard') {
+			submenus.innerHTML = `
+				<div class="submenu">
+						<div class="submenu-description">Check Data Visualization</div>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('dash_siem') }}">
+								SIEM Dashboard
+						</a>
+				</div>
+				`;
+		} else if (menu === 'Monitoring') {
+			submenus.innerHTML = `
+				<div class="submenu">
+						<div class="submenu-description">Detect Network Activity</div>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('mon_net') }}">
+							Network Map
+						</a>
+				</div>
+				`;
+		} else if (menu === 'Configuration') {
+			submenus.innerHTML = `
+				<div class="submenu">
+						<div class="submenu-description">Tune Detection Rules</div>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('conf_coll') }}">
+							Collection Rules
+						</a>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('conf_norm') }}">
+							Normalization Rules
+						</a>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('conf_corr') }}">
+							Correlation Rules
+						</a>
+				</div>
+				`;
+		} else if (menu === 'Data') {
+			submenus.innerHTML = `
+				<div class="submenu">
+						<div class="submenu-description">Explore New Information</div>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('data_msg') }}">
+								Messages
+						</a>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('data_evt') }}">
+								Events
+						</a>
+						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('data_inc') }}">
+								Incidents
+						</a>
+				</div>
+				`;
+		}
+		submenus.style.display = 'block';
+	}
+
+	function hideSubmenus(menu) {
+		const submenus = document.querySelector('.submenus');
+		submenus.style.display = 'none';
+		const submenusBg = document.querySelector('.submenus-bg');
+		submenusBg.style.display = 'none';
+	}
+	document.addEventListener("DOMContentLoaded", function () {
+		let content = document.querySelector('#page_data')
+		fetch(`{{ url_for('mon_net') }}`)
+			.then((response) => response.text())
+			.then((data) => content.innerHTML = data)
+        });
+
+  // Function to scroll through list items every 1 second
+  function scrollListItems() {
+    const listContainer = document.querySelector('.your-list-container');
+    const listItems = listContainer.querySelectorAll('li');
+
+    let index = 0;
+
+    setInterval(() => {
+      listContainer.scrollTop = listItems[index].offsetTop;
+
+      index++;
+
+      if (index === listItems.length) {
+        index = 0;
+      }
+    }, 1000);
+  }
+
+  // Call the function when the window has finished loading
+  window.onload = scrollListItems;
+</script>
+
+{% endblock %}
+
+</html>

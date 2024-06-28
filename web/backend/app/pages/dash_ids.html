@@ -1,0 +1,51 @@
+<div class="container-fluid px-5">
+  <div class="row">
+    <div class="col-9">
+      <div class="row py-2">
+        <div class="col-sm">
+          <v-total-card data_url="/api/ids/total_events" data_title="Events" data_color="warning" />
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <v-total-card data_url="/api/ids/total_messages" data_title="Messages" data_color="warning2" />
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <v-total-card data_url="/api/ids/total_packets" data_title="Packets" data_color="secondary" />
+          </div>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-12">
+          <v-timechart data_title="Timeline" data_url="/api/ids/timeline" />
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-4">
+          <v-top-categories data_title="Categories" data_url="/api/ids/top_categories" data_color="rgb(255, 159, 10)"/>
+        </div>
+        <div class="col-8">
+          <v-bubblechart data_title="Protocols" data_url="/api/ids/bubble"/>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="row py-2">
+        <div class="col">
+          <v-severitychart data_title="Severity" data_url="/api/ids/severity"/>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col">
+          <v-summarychart data_title="Events last day" data_url="/api/ids/sum_chart" data_color="warning"/>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col">
+          <v-radarchart data_title="AI Classification" data_url="/api/ids/radar" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

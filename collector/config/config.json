@@ -1,12 +1,16 @@
 {
-    "collection": {
-        "tap1": {
-            "172.100.0.1": {
-                "name": "Host",
-                "type": "test"
-            }
+    "collector": [
+        {
+            "collector_name": "Collector1",
+            "nodes": [
+                {
+                    "ip": "127.0.0.1",
+                    "name": "test",
+                    "sensor": "test"
+                }
+            ]
         }
-    },
+    ],
     "fusion": [
         {
             "_id": "6512ab91f7da2d7d1a2a95d8",
