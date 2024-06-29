@@ -6,7 +6,7 @@
 <p align="center">
 
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&pause=1000&color=fff&center=true&width=500&lines=+ICS+Ruleness+SIEM;+with+AI+power" alt="description" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=30&pause=1000&color=fff&center=true&width=500&lines=+AI+Ruleness+OT+SIEM;+Autonomous+ICS+protection;+Copilot+for+OT+SOC" alt="description" />
 </p>
 
 <p align="center">
@@ -22,11 +22,11 @@
 
 ## :white_medium_square: Getting Started
 
-[FUZE](https://github.com/zakharb/fuze) is an autonomous [SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management) tailored for OT/ICS environments.
+[FUZE](https://github.com/zakharb/fuze) is an autonomous [OT SIEM](https://en.wikipedia.org/wiki/Security_information_and_event_management) tailored for ICS environments.
 
 Leveraging AI to automatically collect Messages, normalize Events, and detect Incidents without the need for manual rule-writing.
 
-Designed to enhance security and efficiency, FUZE offers advanced threat detection capabilities through its AI-driven approach, ensuring proactive defense in critical Industrial systems.
+Designed to enhance OT/ICS security and efficiency, FUZE offers advanced threat detection capabilities through its AI-driven approach, ensuring proactive defense in critical Industrial systems.
 
 
 ### Requirements
@@ -72,7 +72,7 @@ Using [SemVer](http://semver.org/) for versioning. For the versions available, s
 
 ## :white_medium_square: Authors
 
-* **Zakhar Bengart** - *Initial work* - [Ze](https://github.com/zakharb)
+* **Zakhar Bernhardt** - *Initial work* - [Ze](https://github.com/zakharb)
 
 See also the list of [contributors](https://github.com/zakharb/fuze/contributors) who participated in this project.
 
