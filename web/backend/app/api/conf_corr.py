@@ -20,8 +20,7 @@ async def create_rule(request: Request,
     rule['id'] = str(result.inserted_id)
     rule['time'] = str(rule['time'])
     del rule['_id']
-    return JSONResponse(status_code=status.HTTP_201_CREATED, 
-                        content=rule)
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=rule)
 
 @router.get("/rule", response_description="List all rules")
 async def list_rules(
