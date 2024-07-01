@@ -31,7 +31,6 @@ services:
     build: ./core
     volumes:
       - ./core/app/:/app/
-      - ./core/config/:/app/config
     environment:
       - DATABASE_URI=mongodb://root:root@mongo:27017/
       - DEBUG=true
@@ -43,7 +42,7 @@ services:
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload --reload-dir app/ --forwarded-allow-ips=*
     volumes:
       - ./web/backend/:/app/
-      - ./core/config/:/app/config
+      - ./core/app/config/:/app/config
     environment:
       - DATABASE_URI=mongodb://root:root@mongo:27017/
       - OPENAI_API_KEY=
