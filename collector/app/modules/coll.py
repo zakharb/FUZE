@@ -46,7 +46,7 @@ class Collector:
             await self.create_coroutines()
             await self.start_tasks()
             while True:
-                await asyncio.sleep(3)
+                await asyncio.sleep(300)
                 await self.restart_tasks()
         except Exception as e:
             logging.error(f'[-] COLL: {repr(e)}')

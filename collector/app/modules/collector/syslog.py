@@ -79,7 +79,6 @@ class EchoServerProtocol:
             message = {
                 'time': datetime.now(),
                 'sensor':'syslog',
-                'node': 'node1',
                 'src_ip': ip,
                 'data': data,
             }

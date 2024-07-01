@@ -91,7 +91,7 @@
 		if (menu === 'Dashboard') {
 			submenus.innerHTML = `
 				<div class="submenu">
-						<div class="submenu-description">Check Data Visualization</div>
+						<div class="submenu-description">Data Visualization</div>
 						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('dash_siem') }}">
 								SIEM Dashboard
 						</a>
@@ -100,7 +100,7 @@
 		} else if (menu === 'Monitoring') {
 			submenus.innerHTML = `
 				<div class="submenu">
-						<div class="submenu-description">Detect Network Activity</div>
+						<div class="submenu-description">Network Activity</div>
 						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('mon_net') }}">
 							Network Map
 						</a>
@@ -109,7 +109,7 @@
 		} else if (menu === 'Configuration') {
 			submenus.innerHTML = `
 				<div class="submenu">
-						<div class="submenu-description">Tune Detection Rules</div>
+						<div class="submenu-description">Detection Rules</div>
 						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('conf_coll') }}">
 							Collection Rules
 						</a>
@@ -124,7 +124,7 @@
 		} else if (menu === 'Data') {
 			submenus.innerHTML = `
 				<div class="submenu">
-						<div class="submenu-description">Explore New Information</div>
+						<div class="submenu-description">Search for Information</div>
 						<a class="nav-link" onclick="switchPage(this)" data-url="{{ url_for('data_msg') }}">
 								Messages
 						</a>
@@ -148,7 +148,7 @@
 	}
 	document.addEventListener("DOMContentLoaded", function () {
 		let content = document.querySelector('#page_data')
-		fetch(`{{ url_for('mon_net') }}`)
+		fetch(`{{ url_for('conf_corr') }}`)
 			.then((response) => response.text())
 			.then((data) => content.innerHTML = data)
         });

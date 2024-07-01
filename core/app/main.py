@@ -39,6 +39,7 @@ if __name__ == "__main__":
         ░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░        
         ░▒▓█▓▒░       ░▒▓██████▓▒░░▒▓████████▓▒░▒▓████████▓▒░ 
     \n""")
+    logging.info("[*] Welcome to FUZE Core")
     logging.info(f'[+] Logging level: {logger.level}')
     logging.info('[*] Reading configuration')
     config = Config()

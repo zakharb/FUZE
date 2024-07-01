@@ -46,19 +46,19 @@ class Collector:
         """
         collectors_map = {}
         for collector in self.config:
-            if ('collector_name' not in collector or
+            if ('name' not in collector or
                 'nodes' not in collector):
                 continue
-            collector_name = collector['collector_name']
+            collector_name = collector['name']
             nodes_map = {}
             nodes = collector['nodes']
             for node in nodes:
                 if ('name' not in node or 
                     'sensor' not in node or
-                    'ip' not in node):
+                    'src_ip' not in node):
                     logging.debug(f'[-] LOG: not full config, skip node: {node}')
                     continue
-                ip = node['ip']
+                ip = node['src_ip']
                 nodes_map[ip] = {
                     'name': node['name'],
                     'sensor': node['sensor']
@@ -77,8 +77,7 @@ class Collector:
                 lambda: EchoServerProtocol(collectors, self.queue_messages),
                 local_addr=(self.IP, self.PORT))
             while True:
-                await asyncio.sleep(3)
-                print('col 3 sec')
+                await asyncio.sleep(300)
         except Exception as e:
             logging.error(f'[-] COLL: {repr(e)}')
 
@@ -99,6 +98,7 @@ class EchoServerProtocol:
             data = json.loads(decompressed_data)
             if ('collector' not in data or
                 'messages' not in data):
+                logging.debug(f'[-] LOG: Unknown data format from collector')
                 return
             ip = addr[0]
             collector = data['collector']
@@ -117,9 +117,9 @@ class EchoServerProtocol:
                 sensor = ips[ip]['sensor']
                 message = {
                     'time': raw_message['time'],
-                    'sensor': raw_message['sensor'],
+                    'sensor': sensor,
                     'collector': collector, 
-                    'node': raw_message['node'],
+                    'node': node,
                     'src_ip': raw_message['src_ip'],
                     'data': raw_message['data'],
                 }

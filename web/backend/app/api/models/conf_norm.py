@@ -7,7 +7,7 @@ class NormalizationModel(BaseModel):
     description: str = Field(...)
     tax_main: str = Field(...)
     events: List = Field(...)
-    profile: str = Field(...)
+    sensor: str = Field(...)
 
 class OutNodeModel(NormalizationModel):
     id: str = Field(...)
@@ -18,4 +18,4 @@ class UpdateNormalizationModel(BaseModel):
     description: str = Field(...)
     tax_main: str = Field(...)
     events: List = Field(...)
-    profile: str = Field(...)
+    sensor: str = Field(...)

@@ -23,7 +23,7 @@
 import os
 import logging
 
-DEBUG = os.getenv("DEBUG", "true")
+DEBUG = os.getenv("DEBUG", False)
 
 class Logger:
     """

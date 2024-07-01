@@ -1,10 +1,19 @@
 const existing_buttons = {
+  'install':`
+    <a 
+    class="btn btn-outline-warning mx-1" 
+    data-toggle="tooltip" 
+    title="Install Configuration"
+    onclick="installConfig(this)">
+    Install
+    </a>
+    `,
   'export':`
     <a 
     class="btn btn-outline-secondary mx-1" 
     data-toggle="tooltip" 
     title="Export data"
-    onclick="exportData(this)">
+    onclick="exportData(this)"> 
     Export
     </a>
     `,
@@ -17,7 +26,7 @@ const existing_buttons = {
     Add
     </a>
     `,
-    'import': `
+  'import': `
     <label 
       class="btn btn-outline-secondary mx-1" 
       data-toggle="tooltip" 

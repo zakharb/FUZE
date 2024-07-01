@@ -4,7 +4,7 @@
       <v-table 
         table_id="table" 
         table_name="Correlation Rules" 
-        table_url="/api/correlation/rule" 
+        table_url="/api/correlation/" 
         table_row_id="_id"
         table_tds='{
           "name":"Name",
@@ -12,7 +12,7 @@
           "tactic":"Tactic",
           "time":"Date"
         }' 
-        panel1_buttons='["import","export","add"]' 
+        panel1_buttons='["install","import","export","add"]' 
         panel2_buttons='["save","copy","delete"]'>
       </v-table>
       <v-table-modal modal_title="Edit Correlation Rule" modal_inputs='{
@@ -23,7 +23,7 @@
           "timer":"Timer"
         }'
         modal_rows='{
-          "tax_main":"Profile",
+          "tax_main":"Source",
           "tax_object":"Object",
           "tax_action":"Action",
           "count":"Count",
@@ -36,7 +36,7 @@
       </v-table-modal>
       <v-table-filter 
         modal_inputs='{
-          "tap":"Tap",
+          "collector":"Collector",
           "source":"Source",
           "fields":"Fields"
         }'>
