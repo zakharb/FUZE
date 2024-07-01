@@ -5,12 +5,12 @@
         <v-table
             table_id="table"
             table_name='Normalization Rules'
-            table_url="/api/normalization/rule"
+            table_url="/api/normalization/"
             table_row_id="_id"
             table_tds='{
               "name":"Name",
               "description":"Description",
-              "profile":"Profile",
+              "profile":"Sensor",
               "time":"Date"
             }'
             panel1_buttons='["import","export","add"]'
@@ -20,14 +20,14 @@
           modal_title="Edit Normalization Rule"
           modal_rows='{
             "search":"Code",
-            "info":"Event Name",
+            "name":"Event Name",
             "tax":"Taxanomy"
           }'
           modal_rows_name='events'
           modal_inputs='{
             "name":"Name",
             "description":"Description",
-            "profile":"Profile",
+            "sensor":"Sensor",
             "tax_main":"Tax Main"
           }'
           modal_edit='true'
@@ -36,7 +36,7 @@
           modal_inputs='{
             "name":"Name",
             "description":"Description",
-            "profile":"Profile",
+            "sensor":"Sensor",
             "tax_main":"TaxMain"
           }'
         ></v-table-filter>

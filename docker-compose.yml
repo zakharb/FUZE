@@ -21,17 +21,17 @@ services:
     environment:
       - DEBUG=true
       - TRANSMITTER_HOST=core
-      - TRANSMITTER_PORT=514
+      - TRANSMITTER_PORT=55514
       - SYSLOG=true
       - SYSLOG_PORT=514
     ports:
-      - "514:514"       
+      - "514:514/udp"
 
   core:
     build: ./core
     volumes:
       - ./core/app/:/app/
-      # - ./core/app/config/:/app/config
+      - ./core/config/:/app/config
     environment:
       - DATABASE_URI=mongodb://root:root@mongo:27017/
       - DEBUG=true

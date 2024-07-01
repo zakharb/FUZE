@@ -54,7 +54,6 @@ function addRow(row, data, tds) {
       type="checkbox"
       onclick="checkRow(this)">
   </td>`
-
 }
 
 function expandTable(table_id) {
@@ -118,7 +117,6 @@ function checkAllRow(e) {
   }
   checked_count.textContent = count
 }
-
 
 function deleteRow(e) {
   let table = e.closest(".table-responsive")
@@ -203,7 +201,7 @@ function makeThead(tds) {
 // modal
 function showEditModal(e) {
   let table = e.closest(".table-responsive")
-  let url = table.dataset.url + '/' + e.closest('tr').id
+  let url = table.dataset.url + e.closest('tr').id
   let modal = document.querySelector('.modal')
   myModal = new bootstrap.Modal(modal)
   let modal_body = modal.querySelector('.modal-body')
@@ -296,7 +294,6 @@ function showAddModal(e) {
   myModal.show()
 }
 
-
 function saveModal(e) {
   let table = document.querySelector(".table-responsive")
   let modal = document.querySelector('.modal')
@@ -337,7 +334,6 @@ function saveModal(e) {
       showToast("Error", "Not saved")
       console.error('Error:', error);
     });
-
 }
 
 function addModalRow(button) {
@@ -360,10 +356,33 @@ function switchPanel(table) {
   table.querySelector('#checked_count').textContent = 0;
 }
 
+async function installConfig(e) {
+  let table = e.closest(".table-responsive")
+  let url = table.dataset.url + "install/"
+  try {
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        showToast("Success", "Installed");
+      })
+      .catch((error) => {
+        showToast("Error", "Not installed");
+        console.error('Error:', error);
+      });
+  } catch (error) {
+    console.error('Error installing data:', error);
+  }
+}
 
 async function exportData(e) {
   let table = e.closest(".table-responsive")
-  let url = table.dataset.url
+  let url = table.dataset.url + "export/"
+  console.log(url)
   const dataToExport = await fetch(url)
   .then((response) => response.json())
   try {
@@ -382,15 +401,12 @@ async function exportData(e) {
 
 function importData(e) {
   let table = e.closest(".table-responsive")
-  let url = table.dataset.url + "/import"
+  let url = table.dataset.url + "import/"
   const selectedFile = e.files[0];
-
   if (selectedFile) {
     const reader = new FileReader();
-
     reader.onload = function(event) {
       const fileContent = event.target.result;
-
       try {
         const parsedData = JSON.parse(fileContent);
         fetch(url, {
@@ -415,7 +431,6 @@ function importData(e) {
         console.error('Error importing data:', error);
       }
     };
-
     reader.readAsText(selectedFile);
   }
 }
@@ -424,7 +439,6 @@ function searchRow(searchText) {
     console.log(searchText)
     let table = document.querySelector('.table-responsive');
     let rows = table.querySelectorAll('tbody tr');
-
     rows.forEach(row => {
         let cells = row.querySelectorAll('td');
         let found = false;

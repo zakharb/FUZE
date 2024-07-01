@@ -1,7 +1,7 @@
 {
 	"transmitter": {
 		"collector_name": "Collector1",
-		"host": "localhost",
+		"host": "core",
 		"port": "55514"
 	},
 	"collector": [

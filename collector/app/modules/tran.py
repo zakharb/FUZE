@@ -66,7 +66,7 @@ class Transmitter:
         logging.debug(f'[+] TRAN: agregating {len(raw_messages)}')
         messages_map = {}
         for raw_message in raw_messages:
-            uniq = raw_message['node'] + raw_message['data']
+            uniq = raw_message['src_ip'] + raw_message['data']
             if uniq in messages_map:
                 messages_map[uniq]['count'] += 1
             else:
@@ -84,4 +84,5 @@ class Transmitter:
         }
         data = json.dumps(data, default=str).encode('utf-8')
         compressed_data = zlib.compress(data)
+        logging.debug(f'[+] TRAN: sending to {self.server_host}:{self.server_port}')
         self.sock.sendto(compressed_data, (self.server_host, self.server_port))

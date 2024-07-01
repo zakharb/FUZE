@@ -10,7 +10,7 @@ from typing import List
 
 router = APIRouter()
 
-@router.post("/rule", response_description="Add new rule")
+@router.post("/", response_description="Add new rule")
 async def create_rule(request: Request, 
                       rule: RuleModel = Body(...)):
     rule = jsonable_encoder(rule)
@@ -22,7 +22,7 @@ async def create_rule(request: Request,
     return JSONResponse(status_code=status.HTTP_201_CREATED, 
                         content=rule)
 
-@router.get("/rule", response_description="List all rules")
+@router.get("/", response_description="List all rules")
 async def list_rules(request: Request):
     list_rules = []
     for doc in await db["collections"].find().to_list(length=100):
@@ -30,14 +30,14 @@ async def list_rules(request: Request):
        list_rules.append(doc)
     return list_rules
 
-@router.get("/rule/{id}", response_description="Get a single rule")
+@router.get("/{id}", response_description="Get a single rule")
 async def get_rule(id: str, request: Request):
     if (rule := await db["collections"].find_one({"_id": ObjectId(id) })) is not None:
         rule['_id'] = str(rule['_id'])
         return rule
     raise HTTPException(status_code=404, detail=f"Rule {id} not found")
 
-@router.put("/rule/{id}")
+@router.put("/{id}")
 async def update_rule(id: str, 
                       request: Request, 
                       rule: UpdateRuleModel = Body(...)):
@@ -51,9 +51,8 @@ async def update_rule(id: str,
         return doc
     raise HTTPException(status_code=404, detail=f"Rule {id} not found")
 
-@router.delete("/rule/{id}", response_description="Delete Rule")
-async def delete_rule(id: str, 
-                      request: Request):
+@router.delete("/{id}", response_description="Delete Rule")
+async def delete_rule(id: str, request: Request):
     delete_result = await db["collections"].delete_one(
         {"_id": ObjectId(id)})
     if delete_result.deleted_count == 1:
@@ -76,7 +75,7 @@ async def copy_rule(id: str, request: Request):
     return JSONResponse(status_code=status.HTTP_201_CREATED, 
                         content=copy)
 
-@router.get("/nodes", response_description="List all nodes")
+@router.get("/nodes/", response_description="List all nodes")
 async def list_nodes(request: Request):
     list_nodes = []
     for doc in await db["collections"].find().to_list(length=100):
@@ -87,7 +86,7 @@ async def list_nodes(request: Request):
             list_nodes.append(node)
     return list_nodes
 
-@router.get("/export", response_description="Export rules")
+@router.get("/export/", response_description="Export rules")
 async def export_rules(request: Request):
     list_rules = []
     for doc in await db["collections"].find().to_list(length=10000):
@@ -95,7 +94,7 @@ async def export_rules(request: Request):
        list_rules.append(doc)
     return list_rules
 
-@router.post("/rule/import", response_description="Import rules")
+@router.post("/import/", response_description="Import rules")
 async def import_rules(request: Request):
     data = await request.json()
     for d in data:
